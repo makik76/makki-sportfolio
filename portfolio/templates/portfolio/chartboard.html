@@ -1,0 +1,362 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}Chartboard - Makki's Portfolio{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chartboard-hero {
+        background: linear-gradient(135deg, #1a1a2e 0%, #2d3748 100%);
+        color: white;
+        text-align: center;
+        padding: 6rem 0;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+        border-radius: 20px;
+        box-shadow: var(--card-shadow);
+    }
+    
+    .chartboard-hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+        background-size: 20px 20px;
+        animation: float 20s linear infinite;
+    }
+    
+    .chartboard-content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .chartboard-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #667eea, #f093fb);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: slideInFromTop 1s ease-out;
+    }
+    
+    .chartboard-hero p {
+        font-size: 1.3rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+        animation: slideInFromBottom 1s ease-out 0.3s both;
+    }
+    
+    .chart-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    
+    .chart-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        padding: 2rem;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+    }
+    
+    [data-theme="dark"] .chart-card {
+        background: rgba(26, 26, 46, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .chart-card:hover {
+        transform: translateY(-15px) rotateX(5deg) rotateY(5deg) translateZ(20px) scale(1.05);
+        box-shadow: var(--hover-shadow);
+    }
+    
+    .chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .chart-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .chart-icon {
+        font-size: 2rem;
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .chart-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .chart-btn {
+        padding: 0.5rem 1rem;
+        background: rgba(102, 126, 234, 0.1);
+        border: 1px solid var(--primary-color);
+        border-radius: 8px;
+        color: var(--primary-color);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+    
+    .chart-btn:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: translateY(-2px);
+    }
+    
+    .chart-container {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        height: 300px;
+        position: relative;
+    }
+    
+    [data-theme="dark"] .chart-container {
+        background: rgba(0, 0, 0, 0.3);
+    }
+    
+    .chart-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .chart-placeholder::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(102, 126, 234, 0.2) 1px, transparent 1px);
+        background-size: 15px 15px;
+        animation: float 10s linear infinite;
+    }
+    
+    .chart-icon-placeholder {
+        font-size: 3rem;
+        color: var(--primary-color);
+        animation: pulse3D 2s ease-in-out infinite;
+    }
+    
+    .chart-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .stat-item {
+        text-align: center;
+        padding: 1rem;
+        background: rgba(102, 126, 234, 0.05);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    
+    [data-theme="dark"] .stat-item {
+        background: rgba(102, 126, 234, 0.1);
+    }
+    
+    .stat-item:hover {
+        transform: translateY(-3px);
+        background: rgba(102, 126, 234, 0.1);
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+    
+    .add-chart-btn {
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 2rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transform-style: preserve-3d;
+    }
+    
+    .add-chart-btn:hover {
+        transform: perspective(1000px) rotateX(-5deg) rotateY(5deg) translateZ(15px) scale(1.05);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+    
+    @media (max-width: 768px) {
+        .chart-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .chart-stats {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="chartboard-hero">
+    <div class="chartboard-content">
+        <h1>Chartboard</h1>
+        <p>Visualize your data with beautiful interactive charts and analytics</p>
+    </div>
+</div>
+
+<section>
+    <h2>Analytics Dashboard</h2>
+    <div class="chart-grid">
+        <div class="chart-card">
+            <div class="chart-header">
+                <div class="chart-title">
+                    <i class="fas fa-chart-line chart-icon"></i>
+                    Project Progress
+                </div>
+                <div class="chart-actions">
+                    <button class="chart-btn">Export</button>
+                    <button class="chart-btn">Settings</button>
+                </div>
+            </div>
+            <div class="chart-container">
+                <div class="chart-placeholder">
+                    <i class="fas fa-chart-line chart-icon-placeholder"></i>
+                </div>
+            </div>
+            <div class="chart-stats">
+                <div class="stat-item">
+                    <div class="stat-value">85%</div>
+                    <div class="stat-label">Completion</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Projects</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">4.8</div>
+                    <div class="stat-label">Avg Rating</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-header">
+            <div class="chart-title">
+                <i class="fas fa-chart-bar chart-icon"></i>
+                Skills Overview
+            </div>
+            <div class="chart-actions">
+                <button class="chart-btn">Export</button>
+                <button class="chart-btn">Settings</button>
+            </div>
+        </div>
+        <div class="chart-container">
+            <div class="chart-placeholder">
+                <i class="fas fa-chart-bar chart-icon-placeholder"></i>
+            </div>
+        </div>
+        <div class="chart-stats">
+            <div class="stat-item">
+                <div class="stat-value">15</div>
+                <div class="stat-label">Technologies</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">90%</div>
+                <div class="stat-label">Proficiency</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">500+</div>
+                <div class="stat-label">Hours</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <div class="chart-header">
+            <div class="chart-title">
+                <i class="fas fa-chart-pie chart-icon"></i>
+                Performance Metrics
+            </div>
+            <div class="chart-actions">
+                <button class="chart-btn">Export</button>
+                <button class="chart-btn">Settings</button>
+            </div>
+        </div>
+        <div class="chart-container">
+            <div class="chart-placeholder">
+                <i class="fas fa-chart-pie chart-icon-placeholder"></i>
+            </div>
+        </div>
+        <div class="chart-stats">
+            <div class="stat-item">
+                <div class="stat-value">98%</div>
+                <div class="stat-label">Uptime</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">1.2s</div>
+                <div class="stat-label">Avg Load</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">99.9%</div>
+                <div class="stat-label">Success</div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+<section>
+    <div style="text-align: center; padding: 3rem;">
+        <button class="add-chart-btn">
+            <i class="fas fa-plus"></i>
+            Add New Chart
+        </button>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,522 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}Contact - Makki's Portfolio{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-hero {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(240, 147, 251, 0.9) 100%);
+        color: white;
+        text-align: center;
+        padding: 6rem 0;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+        border-radius: 20px;
+        box-shadow: var(--card-shadow);
+    }
+    
+    .contact-hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+        background-size: 20px 20px;
+        animation: float 20s linear infinite;
+    }
+    
+    .contact-content {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .contact-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #ffffff, #f0f0f0);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: slideInFromTop 1s ease-out;
+    }
+    
+    .contact-hero p {
+        font-size: 1.3rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+        animation: slideInFromBottom 1s ease-out 0.3s both;
+    }
+    
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        margin-bottom: 3rem;
+    }
+    
+    .contact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .contact-card {
+        background: var(--card-bg);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 2.5rem;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .contact-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+        transition: left 0.5s ease;
+    }
+    
+    .contact-card:hover::before {
+        left: 100%;
+    }
+    
+    .contact-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-color);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    }
+    
+    .contact-icon {
+        font-size: 2.5rem;
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+    }
+    
+    .contact-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+    
+    .contact-detail {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+    }
+    
+    .contact-detail:hover {
+        color: var(--primary-color);
+    }
+    
+    .contact-form {
+        background: var(--card-bg);
+        border-radius: 24px;
+        padding: 3rem;
+        box-shadow: var(--card-shadow);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.4s ease;
+    }
+    
+    .contact-form:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--hover-shadow);
+        border-color: var(--accent-color);
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+    }
+    
+    .form-input,
+    .form-textarea {
+        width: 100%;
+        padding: 1.25rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text-primary);
+    }
+    
+    .form-input:focus,
+    .form-textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+        background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .form-textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+    
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    
+    .submit-btn {
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        color: white;
+        border: none;
+        padding: 1rem 2.5rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid transparent;
+    }
+    
+    .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s ease;
+    }
+    
+    .submit-btn:hover::before {
+        left: 100%;
+    }
+    
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        border-color: var(--accent-color);
+    }
+    
+    .social-section {
+        text-align: center;
+        padding: 3rem 2rem;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+        border-radius: 20px;
+        border: 2px solid rgba(102, 126, 234, 0.2);
+        margin-top: 3rem;
+    }
+    
+    .social-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        background: var(--card-bg);
+        color: var(--primary-color);
+        border-radius: 50%;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 1.3rem;
+    }
+    
+    .social-link:hover {
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        color: white;
+        transform: translateY(-5px) scale(1.1);
+        border-color: var(--accent-color);
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+    }
+    
+    .info-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+    
+    .info-card {
+        text-align: center;
+        padding: 2.5rem;
+        background: var(--card-bg);
+        border-radius: 20px;
+        box-shadow: var(--card-shadow);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--hover-shadow);
+        border-color: var(--accent-color);
+    }
+    
+    .info-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .info-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+    
+    .info-text {
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+    
+    .success-message {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        display: none;
+        animation: slideInFromTop 0.5s ease-out;
+    }
+    
+    @media (max-width: 768px) {
+        .contact-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+        
+        .contact-hero h1 {
+            font-size: 2.5rem;
+        }
+        
+        .social-links {
+            gap: 1rem;
+        }
+        
+        .social-link {
+            width: 50px;
+            height: 50px;
+            font-size: 1.1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="contact-hero">
+    <div class="contact-content">
+        <h1>Get In Touch</h1>
+        <p>Let's discuss your project or collaboration opportunities</p>
+    </div>
+</div>
+
+<section>
+    <div class="contact-grid">
+        <div class="contact-info">
+            <h2>Contact Information</h2>
+            <div class="contact-card">
+                <div class="contact-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3 class="contact-title">Email</h3>
+                <p class="contact-detail">hello@makkiportfolio.com</p>
+            </div>
+            
+            <div class="contact-card">
+                <div class="contact-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <h3 class="contact-title">Phone</h3>
+                <p class="contact-detail">+1 (555) 123-4567</p>
+            </div>
+            
+            <div class="contact-card">
+                <div class="contact-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3 class="contact-title">Location</h3>
+                <p class="contact-detail">San Francisco, CA</p>
+            </div>
+        </div>
+        
+        <div class="contact-form-section">
+            <h2>Send Me a Message</h2>
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i> Thank you for your message! I'll get back to you soon.
+            </div>
+            <form class="contact-form" id="contactForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Name *</label>
+                        <input type="text" id="name" name="name" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email *</label>
+                        <input type="email" id="email" name="email" class="form-input" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject" class="form-label">Subject *</label>
+                    <input type="text" id="subject" name="subject" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message" class="form-label">Message *</label>
+                    <textarea id="message" name="message" class="form-textarea" required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i> Send Message
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="social-section">
+    <h2 class="social-title">Connect With Me</h2>
+    <div class="social-links">
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-link">
+            <i class="fab fa-github"></i>
+        </a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link">
+            <i class="fab fa-linkedin"></i>
+        </a>
+        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-link">
+            <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-link">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://dribbble.com" target="_blank" rel="noopener noreferrer" class="social-link">
+            <i class="fab fa-dribbble"></i>
+        </a>
+    </div>
+    <p style="color: var(--text-secondary); font-size: 1.1rem;">
+        Follow me on social media for updates on my latest projects and tech insights
+    </p>
+</section>
+
+<section>
+    <div class="info-section">
+        <div class="info-card">
+            <div class="info-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <h3 class="info-title">Response Time</h3>
+            <p class="info-text">I typically respond to messages within 24-48 hours. For urgent inquiries, please mention it in your message subject.</p>
+        </div>
+        
+        <div class="info-card">
+            <div class="info-icon">
+                <i class="fas fa-handshake"></i>
+            </div>
+            <h3 class="info-title">Collaboration</h3>
+            <p class="info-text">I'm always excited to discuss new projects, collaborations, or just chat about technology and development!</p>
+        </div>
+        
+        <div class="info-card">
+            <div class="info-icon">
+                <i class="fas fa-rocket"></i>
+            </div>
+            <h3 class="info-title">Let's Build</h3>
+            <p class="info-text">Have a project in mind? I'd love to hear about it and discuss how we can bring your ideas to life.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Form submission handler
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+        
+        // Show success message
+        const successMessage = document.getElementById('successMessage');
+        successMessage.style.display = 'block';
+        
+        // Reset form
+        this.reset();
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+            successMessage.style.display = 'none';
+        }, 5000);
+        
+        // In a real application, you would send this data to your backend
+        console.log('Form submitted:', data);
+    });
+    
+    // Add smooth reveal animation for contact cards
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+            }
+        });
+    }, observerOptions);
+
+    // Observe all contact cards and form
+    document.addEventListener('DOMContentLoaded', () => {
+        const elementsToObserve = document.querySelectorAll('.contact-card, .contact-form, .info-card');
+        elementsToObserve.forEach(element => {
+            observer.observe(element);
+        });
+    });
+</script>
+{% endblock %}

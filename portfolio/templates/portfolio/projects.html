@@ -1,0 +1,687 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}Projects - Makki's Portfolio{% endblock %}
+
+{% block extra_css %}
+<style>
+    .filter-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+    }
+    
+    .filter-btn {
+        padding: 0.75rem 1.5rem;
+        border: 2px solid var(--primary-color);
+        background: transparent;
+        color: var(--primary-color);
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+    }
+    
+    .filter-btn:hover,
+    .filter-btn.active {
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        color: white;
+        border-color: var(--accent-color);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 2.5rem;
+        margin-top: 2rem;
+    }
+    
+    .project-card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        animation: fadeInUp 0.8s ease-out;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .project-card:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: var(--hover-shadow);
+    }
+    
+    .project-image {
+        height: 250px;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    }
+    
+    .project-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .project-card:hover .project-image img {
+        transform: scale(1.1);
+    }
+    
+    .project-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(240, 147, 251, 0.9));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .project-card:hover .project-overlay {
+        opacity: 1;
+    }
+    
+    .overlay-content {
+        text-align: center;
+        color: white;
+    }
+    
+    .overlay-content h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .overlay-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+    
+    .overlay-btn {
+        padding: 0.5rem 1.5rem;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+    }
+    
+    .overlay-btn:hover {
+        background: var(--accent-color);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
+    }
+    
+    .project-content {
+        padding: 2rem;
+    }
+    
+    .project-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 1rem;
+    }
+    
+    .project-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+    
+    .project-category {
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    
+    .project-description {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+    
+    .project-tech {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .tech-tag {
+        background: rgba(59, 130, 246, 0.15);
+        color: var(--accent-color);
+        padding: 0.35rem 0.75rem;
+        border-radius: 15px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .tech-tag:hover {
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        color: white;
+        transform: translateY(-2px);
+    }
+    
+    .project-stats {
+        display: flex;
+        gap: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .stat {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+    
+    .stat i {
+        color: var(--primary-color);
+    }
+    
+    .tech-showcase {
+        margin-top: 4rem;
+    }
+    
+    .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    
+    .tech-category {
+        background: var(--card-bg);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    
+    .tech-category:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-color);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    }
+    
+    .tech-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .tech-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+    
+    .tech-list {
+        list-style: none;
+        color: var(--text-secondary);
+    }
+    
+    .tech-list li {
+        padding: 0.25rem 0;
+        transition: color 0.3s ease;
+    }
+    
+    .tech-list li:hover {
+        color: var(--primary-color);
+    }
+    
+    @media (max-width: 768px) {
+        .projects-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .project-header {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .overlay-buttons {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="hero-content">
+        <h1>My Projects</h1>
+        <p>Explore my latest work and creative solutions</p>
+    </div>
+</div>
+
+<section>
+    <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="web">Web Development</button>
+        <button class="filter-btn" data-filter="mobile">Mobile Apps</button>
+        <button class="filter-btn" data-filter="design">UI/UX Design</button>
+    </div>
+
+    <div class="projects-grid">
+        <div class="project-card" data-category="web">
+            <div class="project-image">
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 4rem; color: white;">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="project-overlay">
+                    <div class="overlay-content">
+                        <h3>E-Commerce Platform</h3>
+                        <div class="overlay-buttons">
+                            <a href="#" class="overlay-btn">Live Demo</a>
+                            <a href="#" class="overlay-btn">View Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-content">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">E-Commerce Platform</h3>
+                        <p class="project-description">A full-featured online shopping platform with real-time inventory management, secure payment processing, and advanced analytics dashboard.</p>
+                    </div>
+                    <span class="project-category">Web Development</span>
+                </div>
+                <div class="project-tech">
+                    <span class="tech-tag">Django</span>
+                    <span class="tech-tag">React</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">Redis</span>
+                    <span class="tech-tag">Docker</span>
+                </div>
+                <div class="project-stats">
+                    <div class="stat">
+                        <i class="fas fa-star"></i>
+                        <span>4.9/5.0</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-users"></i>
+                        <span>10k+ Users</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-code-branch"></i>
+                        <span>Open Source</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card" data-category="mobile">
+            <div class="project-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 4rem; color: white;">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <div class="project-overlay">
+                    <div class="overlay-content">
+                        <h3>Task Management App</h3>
+                        <div class="overlay-buttons">
+                            <a href="#" class="overlay-btn">App Store</a>
+                            <a href="#" class="overlay-btn">View Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-content">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Task Management App</h3>
+                        <p class="project-description">Collaborative task management application with real-time updates, team collaboration features, and comprehensive analytics dashboard.</p>
+                    </div>
+                    <span class="project-category">Mobile App</span>
+                </div>
+                <div class="project-tech">
+                    <span class="tech-tag">React Native</span>
+                    <span class="tech-tag">Node.js</span>
+                    <span class="tech-tag">MongoDB</span>
+                    <span class="tech-tag">Socket.io</span>
+                    <span class="tech-tag">Firebase</span>
+                </div>
+                <div class="project-stats">
+                    <div class="stat">
+                        <i class="fas fa-star"></i>
+                        <span>4.8/5.0</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-users"></i>
+                        <span>5k+ Users</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-download"></i>
+                        <span>50k+ Downloads</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card" data-category="web">
+            <div class="project-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 4rem; color: white;">
+                    <i class="fas fa-cloud-sun"></i>
+                </div>
+                <div class="project-overlay">
+                    <div class="overlay-content">
+                        <h3>Weather Dashboard</h3>
+                        <div class="overlay-buttons">
+                            <a href="#" class="overlay-btn">Live Demo</a>
+                            <a href="#" class="overlay-btn">View Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-content">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Weather Dashboard</h3>
+                        <p class="project-description">Advanced weather tracking application with interactive maps, detailed forecasts, and comprehensive weather analytics.</p>
+                    </div>
+                    <span class="project-category">Web Development</span>
+                </div>
+                <div class="project-tech">
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">Vue.js</span>
+                    <span class="tech-tag">Chart.js</span>
+                    <span class="tech-tag">OpenWeather API</span>
+                    <span class="tech-tag">Mapbox</span>
+                </div>
+                <div class="project-stats">
+                    <div class="stat">
+                        <i class="fas fa-star"></i>
+                        <span>4.7/5.0</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-users"></i>
+                        <span>25k+ Users</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-globe"></i>
+                        <span>Global Coverage</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card" data-category="design">
+            <div class="project-image" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 4rem; color: white;">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <div class="project-overlay">
+                    <div class="overlay-content">
+                        <h3>Design System</h3>
+                        <div class="overlay-buttons">
+                            <a href="#" class="overlay-btn">View Design</a>
+                            <a href="#" class="overlay-btn">Figma File</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-content">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Design System</h3>
+                        <p class="project-description">Complete design system with reusable components, design tokens, and comprehensive documentation for consistent UI/UX.</p>
+                    </div>
+                    <span class="project-category">UI/UX Design</span>
+                </div>
+                <div class="project-tech">
+                    <span class="tech-tag">Figma</span>
+                    <span class="tech-tag">Storybook</span>
+                    <span class="tech-tag">CSS Variables</span>
+                    <span class="tech-tag">React</span>
+                    <span class="tech-tag">TypeScript</span>
+                </div>
+                <div class="project-stats">
+                    <div class="stat">
+                        <i class="fas fa-star"></i>
+                        <span>5.0/5.0</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-palette"></i>
+                        <span>50+ Components</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-book"></i>
+                        <span>Documentation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card" data-category="web">
+            <div class="project-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 4rem; color: white;">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div class="project-overlay">
+                    <div class="overlay-content">
+                        <h3>Real-time Chat App</h3>
+                        <div class="overlay-buttons">
+                            <a href="#" class="overlay-btn">Live Demo</a>
+                            <a href="#" class="overlay-btn">View Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-content">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Real-time Chat App</h3>
+                        <p class="project-description">Feature-rich chat application with real-time messaging, file sharing, video calls, and end-to-end encryption.</p>
+                    </div>
+                    <span class="project-category">Web Development</span>
+                </div>
+                <div class="project-tech">
+                    <span class="tech-tag">Next.js</span>
+                    <span class="tech-tag">Socket.io</span>
+                    <span class="tech-tag">WebRTC</span>
+                    <span class="tech-tag">PostgreSQL</span>
+                    <span class="tech-tag">Redis</span>
+                </div>
+                <div class="project-stats">
+                    <div class="stat">
+                        <i class="fas fa-star"></i>
+                        <span>4.9/5.0</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-users"></i>
+                        <span>15k+ Users</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-lock"></i>
+                        <span>E2E Encrypted</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card" data-category="mobile">
+            <div class="project-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 4rem; color: white;">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <div class="project-overlay">
+                    <div class="overlay-content">
+                        <h3>Fitness Tracker</h3>
+                        <div class="overlay-buttons">
+                            <a href="#" class="overlay-btn">App Store</a>
+                            <a href="#" class="overlay-btn">View Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-content">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">Fitness Tracker</h3>
+                        <p class="project-description">Comprehensive fitness tracking app with workout plans, nutrition tracking, progress analytics, and social features.</p>
+                    </div>
+                    <span class="project-category">Mobile App</span>
+                </div>
+                <div class="project-tech">
+                    <span class="tech-tag">Flutter</span>
+                    <span class="tech-tag">Firebase</span>
+                    <span class="tech-tag">HealthKit</span>
+                    <span class="tech-tag">Google Fit</span>
+                    <span class="tech-tag">ML Kit</span>
+                </div>
+                <div class="project-stats">
+                    <div class="stat">
+                        <i class="fas fa-star"></i>
+                        <span>4.8/5.0</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-users"></i>
+                        <span>8k+ Users</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-download"></i>
+                        <span>100k+ Downloads</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="tech-showcase">
+    <h2>Technologies & Expertise</h2>
+    <div class="tech-grid">
+        <div class="tech-category">
+            <div class="tech-icon">
+                <i class="fas fa-laptop-code"></i>
+            </div>
+            <h3 class="tech-title">Frontend Development</h3>
+            <ul class="tech-list">
+                <li>React.js & Next.js</li>
+                <li>Vue.js & Nuxt.js</li>
+                <li>TypeScript & JavaScript ES6+</li>
+                <li>HTML5 & CSS3/Sass</li>
+                <li>Tailwind CSS & Bootstrap</li>
+            </ul>
+        </div>
+        <div class="tech-category">
+            <div class="tech-icon">
+                <i class="fas fa-server"></i>
+            </div>
+            <h3 class="tech-title">Backend Development</h3>
+            <ul class="tech-list">
+                <li>Python & Django</li>
+                <li>Node.js & Express</li>
+                <li>Java & Spring Boot</li>
+                <li>PHP & Laravel</li>
+                <li>GraphQL & REST APIs</li>
+            </ul>
+        </div>
+        <div class="tech-category">
+            <div class="tech-icon">
+                <i class="fas fa-database"></i>
+            </div>
+            <h3 class="tech-title">Database & Storage</h3>
+            <ul class="tech-list">
+                <li>PostgreSQL & MySQL</li>
+                <li>MongoDB & Redis</li>
+                <li>Firebase & Firestore</li>
+                <li>AWS S3 & Cloud Storage</li>
+                <li>Database Optimization</li>
+            </ul>
+        </div>
+        <div class="tech-category">
+            <div class="tech-icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            <h3 class="tech-title">Tools & DevOps</h3>
+            <ul class="tech-list">
+                <li>Git & GitHub</li>
+                <li>Docker & Kubernetes</li>
+                <li>CI/CD Pipelines</li>
+                <li>AWS & Google Cloud</li>
+                <li>Testing & Monitoring</li>
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Filter functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            button.classList.add('active');
+            
+            const filter = button.getAttribute('data-filter');
+            
+            projectCards.forEach(card => {
+                if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeInUp 0.5s ease-out';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Add smooth reveal animation on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+            }
+        });
+    }, observerOptions);
+
+    // Observe all project cards
+    document.addEventListener('DOMContentLoaded', () => {
+        projectCards.forEach(card => {
+            observer.observe(card);
+        });
+    });
+</script>
+{% endblock %}
