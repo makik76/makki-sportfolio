@@ -25,7 +25,7 @@
         height: 200%;
         background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
         background-size: 20px 20px;
-        animation: float 20s linear infinite;
+        animation: float 40s linear infinite;
     }
     
     .skills-content {
@@ -41,7 +41,7 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        animation: slideInFromTop 1s ease-out;
+        animation: fadeInUp 0.8s ease-out;
     }
     
     .skills-hero p {
@@ -49,7 +49,7 @@
         opacity: 0.9;
         max-width: 600px;
         margin: 0 auto;
-        animation: slideInFromBottom 1s ease-out 0.3s both;
+        animation: fadeInUp 0.8s ease-out 0.2s both;
     }
     
     .skills-grid {
@@ -65,11 +65,9 @@
         border: 1px solid rgba(255, 255, 255, 0.05);
         border-radius: 20px;
         padding: 2.5rem;
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
-        transform-style: preserve-3d;
-        perspective: 1000px;
     }
     
     [data-theme="dark"] .skill-category {
@@ -78,7 +76,7 @@
     }
     
     .skill-category:hover {
-        transform: translateY(-15px) rotateX(5deg) rotateY(5deg) translateZ(20px) scale(1.05);
+        transform: translateY(-5px);
         box-shadow: var(--hover-shadow);
         border-color: var(--accent-color);
     }
@@ -142,7 +140,6 @@
     
     .skill-item:hover {
         background: rgba(139, 92, 246, 0.1);
-        transform: translateX(5px);
         border-color: var(--primary-color);
     }
     
