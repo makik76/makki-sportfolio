@@ -5,8 +5,9 @@
 {% block extra_css %}
 <style>
     .skills-hero {
-        background: linear-gradient(135deg, #1a1a2e 0%, #2d1b69 100%);
-        color: white;
+        background: linear-gradient(135deg, #022c22 0%, #011410 100%);
+        border: 1px solid rgba(20, 168, 0, 0.15);
+        color: #ffffff;
         text-align: center;
         padding: 6rem 0;
         margin-bottom: 3rem;
@@ -23,7 +24,7 @@
         left: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
+        background: radial-gradient(circle, rgba(20, 168, 0, 0.1) 1px, transparent 1px);
         background-size: 20px 20px;
         animation: float 40s linear infinite;
     }
@@ -34,10 +35,11 @@
     }
     
     .skills-hero h1 {
+        font-family: 'Outfit', sans-serif;
         font-size: 3.5rem;
         font-weight: 800;
         margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, #8b5cf6, #f093fb);
+        background: linear-gradient(135deg, #ffffff, #85ffa1);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -49,6 +51,7 @@
         opacity: 0.9;
         max-width: 600px;
         margin: 0 auto;
+        color: rgba(255, 255, 255, 0.7);
         animation: fadeInUp 0.8s ease-out 0.2s both;
     }
     
@@ -62,7 +65,7 @@
     .skill-category {
         background: var(--card-bg);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(20, 168, 0, 0.15);
         border-radius: 20px;
         padding: 2.5rem;
         transition: all 0.3s ease;
@@ -72,13 +75,13 @@
     
     [data-theme="dark"] .skill-category {
         background: var(--card-bg);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(20, 168, 0, 0.15);
     }
     
     .skill-category:hover {
         transform: translateY(-5px);
         box-shadow: var(--hover-shadow);
-        border-color: var(--accent-color);
+        border-color: var(--secondary-color);
     }
     
     .skill-category::before {
@@ -88,7 +91,7 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+        background: linear-gradient(90deg, transparent, rgba(20, 168, 0, 0.1), transparent);
         transition: left 0.5s ease;
     }
     
@@ -105,13 +108,14 @@
     
     .skill-icon {
         font-size: 2.5rem;
-        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
     
     .skill-title {
+        font-family: 'Outfit', sans-serif;
         font-size: 1.5rem;
         font-weight: 700;
         color: var(--text-primary);
@@ -128,19 +132,19 @@
         display: flex;
         align-items: center;
         padding: 0.75rem;
-        background: rgba(255, 255, 255, 0.03);
+        background: rgba(1, 20, 16, 0.5);
         border-radius: 12px;
         transition: all 0.3s ease;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(20, 168, 0, 0.15);
     }
     
     [data-theme="dark"] .skill-item {
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(1, 20, 16, 0.5);
     }
     
     .skill-item:hover {
-        background: rgba(139, 92, 246, 0.1);
-        border-color: var(--primary-color);
+        background: rgba(20, 168, 0, 0.15);
+        border-color: var(--secondary-color);
     }
     
     .skill-name {
@@ -159,12 +163,12 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: rgba(139, 92, 246, 0.2);
+        background: rgba(20, 168, 0, 0.15);
         transition: all 0.3s ease;
     }
     
     .skill-dot.filled {
-        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     }
     
     .progress-section {
@@ -190,26 +194,26 @@
     
     .progress-percentage {
         font-size: 1.1rem;
-        color: var(--primary-color);
+        color: var(--secondary-color);
         font-weight: 700;
     }
     
     .progress-bar {
         width: 100%;
         height: 12px;
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(20, 168, 0, 0.15);
         border-radius: 50px;
         overflow: hidden;
         position: relative;
     }
     
     [data-theme="dark"] .progress-bar {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(20, 168, 0, 0.15);
     }
     
     .progress-fill {
         height: 100%;
-        background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
         border-radius: 50px;
         transition: width 1s ease;
         position: relative;

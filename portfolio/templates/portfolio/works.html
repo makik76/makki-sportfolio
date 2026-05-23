@@ -5,8 +5,9 @@
 {% block extra_css %}
 <style>
     .works-hero {
-        background: linear-gradient(135deg, #1a1a2e 0%, #2d1b69 100%);
-        color: white;
+        background: linear-gradient(135deg, #022c22 0%, #011410 100%);
+        border: 1px solid rgba(20, 168, 0, 0.15);
+        color: #ffffff;
         text-align: center;
         padding: 6rem 0;
         margin-bottom: 3rem;
@@ -23,7 +24,7 @@
         left: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
+        background: radial-gradient(circle, rgba(20, 168, 0, 0.1) 1px, transparent 1px);
         background-size: 20px 20px;
         animation: float 40s linear infinite;
     }
@@ -34,10 +35,11 @@
     }
     
     .works-hero h1 {
+        font-family: 'Outfit', sans-serif;
         font-size: 3.5rem;
         font-weight: 800;
         margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, #8b5cf6, #f093fb);
+        background: linear-gradient(135deg, #ffffff, #85ffa1);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -49,6 +51,7 @@
         opacity: 0.9;
         max-width: 600px;
         margin: 0 auto;
+        color: rgba(255, 255, 255, 0.7);
         animation: fadeInUp 0.8s ease-out 0.2s both;
     }
     
@@ -61,7 +64,7 @@
     
     .work-card {
         background: var(--card-bg);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(20, 168, 0, 0.15);
         border-radius: 16px;
         overflow: hidden;
         transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
@@ -71,32 +74,29 @@
     
     [data-theme="dark"] .work-card {
         background: var(--card-bg);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(20, 168, 0, 0.15);
     }
     
     .work-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-        border-color: var(--primary-color);
+        box-shadow: var(--hover-shadow);
+        border-color: var(--secondary-color);
     }
-    
-
     
     .work-image {
         height: 200px;
-        background: linear-gradient(135deg, #8b5cf6, #f093fb);
+        background: linear-gradient(135deg, #022c22, #011d16) !important;
         display: flex;
         align-items: center;
         justify-content: center;
         position: relative;
         overflow: hidden;
+        border-bottom: 1px solid rgba(20, 168, 0, 0.15);
     }
-    
-
     
     .work-icon {
         font-size: 3rem;
-        color: white;
+        color: #00ff88 !important;
         transition: transform 0.3s ease;
     }
     
@@ -109,6 +109,7 @@
     }
     
     .work-title {
+        font-family: 'Outfit', sans-serif;
         font-size: 1.5rem;
         font-weight: 700;
         color: var(--text-primary);
@@ -132,24 +133,24 @@
     }
     
     .work-tag {
-        background: rgba(139, 92, 246, 0.1);
-        color: var(--primary-color);
+        background: rgba(20, 168, 0, 0.15);
+        color: #00ff88;
         padding: 0.25rem 0.75rem;
         border-radius: 20px;
         font-size: 0.8rem;
         font-weight: 500;
-        border: 1px solid rgba(139, 92, 246, 0.2);
+        border: 1px solid rgba(20, 168, 0, 0.25);
         transition: all 0.3s ease;
     }
     
     [data-theme="dark"] .work-tag {
-        background: rgba(139, 92, 246, 0.2);
-        border: 1px solid rgba(139, 92, 246, 0.3);
+        background: rgba(20, 168, 0, 0.15);
+        border: 1px solid rgba(20, 168, 0, 0.25);
     }
     
     .work-tag:hover {
         background: var(--primary-color);
-        color: white;
+        color: #ffffff;
         transform: translateY(-2px) scale(1.05);
     }
     
@@ -157,7 +158,7 @@
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        color: var(--primary-color);
+        color: var(--secondary-color);
         text-decoration: none;
         font-weight: 600;
         font-size: 0.9rem;
@@ -165,7 +166,7 @@
     }
     
     .work-link:hover {
-        color: var(--accent-color);
+        color: var(--primary-color);
         transform: translateX(5px);
     }
     
@@ -183,8 +184,8 @@
     }
     
     .filter-btn {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(1, 20, 16, 0.5);
+        border: 1px solid rgba(20, 168, 0, 0.15);
         color: var(--text-primary);
         padding: 0.6rem 1.8rem;
         border-radius: 50px;
@@ -195,19 +196,21 @@
     }
     
     [data-theme="dark"] .filter-btn {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(1, 20, 16, 0.5);
+        border: 1px solid rgba(20, 168, 0, 0.15);
     }
     
     .filter-btn:hover {
-        background: var(--primary-color);
-        color: white;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: #ffffff;
+        border-color: transparent;
         transform: translateY(-2px);
     }
     
     .filter-btn.active {
-        background: var(--primary-color);
-        color: white;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: #ffffff;
+        border-color: transparent;
     }
     
     @media (max-width: 768px) {
@@ -247,7 +250,7 @@
             </div>
         </div>
         <div class="work-card" data-category="web">
-            <div class="work-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"><i class="fas fa-chart-line work-icon"></i></div>
+            <div class="work-image" style="background: linear-gradient(135deg, #FFD8C3 0%, #FFB59E 100%);"><i class="fas fa-chart-line work-icon"></i></div>
             <div class="work-content">
                 <h3 class="work-title"><i class="fas fa-chart-bar"></i> Analytics Dashboard</h3>
                 <p class="work-description">Interactive data visualization dashboard with real-time analytics, custom charts, and automated reporting system.</p>
@@ -330,7 +333,7 @@
 
         <!-- Mobile Apps (10 Projects) -->
         <div class="work-card" data-category="mobile">
-            <div class="work-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"><i class="fas fa-tasks work-icon"></i></div>
+            <div class="work-image" style="background: linear-gradient(135deg, #FFD8C3 0%, #FFB59E 100%);"><i class="fas fa-tasks work-icon"></i></div>
             <div class="work-content">
                 <h3 class="work-title"><i class="fas fa-check-circle"></i> Task Master</h3>
                 <p class="work-description">Cross-platform task management app with real-time notifications and offline support.</p>
@@ -402,7 +405,7 @@
             </div>
         </div>
         <div class="work-card" data-category="mobile">
-            <div class="work-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"><i class="fas fa-money-bill-wave work-icon"></i></div>
+            <div class="work-image" style="background: linear-gradient(135deg, #FFD8C3 0%, #FFB59E 100%);"><i class="fas fa-money-bill-wave work-icon"></i></div>
             <div class="work-content">
                 <h3 class="work-title"><i class="fas fa-calculator"></i> Budget Wise</h3>
                 <p class="work-description">Personal finance manager with automated expense tracking from SMS and bank sync.</p>
@@ -485,7 +488,7 @@
             </div>
         </div>
         <div class="work-card" data-category="design">
-            <div class="work-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"><i class="fas fa-cubes work-icon"></i></div>
+            <div class="work-image" style="background: linear-gradient(135deg, #FFD8C3 0%, #FFB59E 100%);"><i class="fas fa-cubes work-icon"></i></div>
             <div class="work-content">
                 <h3 class="work-title"><i class="fas fa-cube"></i> 3D Asset Pack</h3>
                 <p class="work-description">High-quality 3D claymorphic assets for mobile app marketing and web hero sections.</p>
@@ -494,7 +497,7 @@
             </div>
         </div>
         <div class="work-card" data-category="design">
-            <div class="work-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);"><i class="fas fa-mouse-pointer work-icon"></i></div>
+            <div class="work-image" style="background: linear-gradient(135deg, #FFD8C3 0%, #FFB59E 100%);"><i class="fas fa-mouse-pointer work-icon"></i></div>
             <div class="work-content">
                 <h3 class="work-title"><i class="fas fa-hand-point-up"></i> Interaction Kit</h3>
                 <p class="work-description">A set of interactive prototypes showcasing advanced micro-interactions for web applications.</p>
@@ -516,7 +519,7 @@
 
 <section class="no-3d">
     <div style="text-align: center; padding: 3rem;">
-        <button class="btn" style="background: linear-gradient(135deg, var(--primary-color), var(--accent-color));">
+        <button class="btn" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
             <i class="fas fa-plus"></i>
             Load More Projects
         </button>

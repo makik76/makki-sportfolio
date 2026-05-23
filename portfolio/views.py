@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import JsonResponse
@@ -7,19 +7,19 @@ def home(request):
     return render(request, 'portfolio/home.html')
 
 def about(request):
-    return render(request, 'portfolio/about.html')
+    return redirect('/#about')
 
 def skills(request):
-    return render(request, 'portfolio/skills.html')
+    return redirect('/#skills')
 
 def works(request):
-    return render(request, 'portfolio/works.html')
+    return redirect('/#works')
 
 def projects(request):
-    return render(request, 'portfolio/projects.html')
+    return redirect('/#projects')
 
 def chartboard(request):
-    return render(request, 'portfolio/chartboard.html')
+    return redirect('/')
 
 def contact(request):
     if request.method == 'POST':
@@ -42,4 +42,5 @@ def contact(request):
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
             
-    return render(request, 'portfolio/contact.html')
+    return redirect('/#contact')
+
