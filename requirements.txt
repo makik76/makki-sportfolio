@@ -7,3 +7,5 @@ pytz
 sqlparse
 asgiref
 django-jazzmin
+psycopg2-binary
+dj-database-url
