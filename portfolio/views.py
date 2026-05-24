@@ -2,9 +2,19 @@ from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import JsonResponse
+from .models import PersonalInfo, Skill, Project, ContactMessage
 
 def home(request):
-    return render(request, 'portfolio/home.html')
+    personal_info = PersonalInfo.objects.first()
+    skills = Skill.objects.all()
+    projects = Project.objects.all()
+    
+    context = {
+        'personal_info': personal_info,
+        'skills': skills,
+        'projects': projects,
+    }
+    return render(request, 'portfolio/home.html', context)
 
 def about(request):
     return redirect('/#about')
@@ -27,6 +37,11 @@ def contact(request):
         email = request.POST.get('email')
         subject = request.POST.get('subject')
         message = request.POST.get('message')
+        
+        # Save to database
+        ContactMessage.objects.create(
+            name=name, email=email, subject=subject, message=message
+        )
         
         full_message = f"Message from {name} ({email}):\n\n{message}"
         

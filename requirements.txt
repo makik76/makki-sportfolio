@@ -6,3 +6,4 @@ requests
 pytz
 sqlparse
 asgiref
+django-jazzmin

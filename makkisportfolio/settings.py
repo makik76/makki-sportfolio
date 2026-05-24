@@ -36,6 +36,7 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", ".vercel.app,.onrender.com,localhost,
 # Application definition
 
 INSTALLED_APPS = [
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -127,6 +128,9 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -141,3 +145,19 @@ EMAIL_HOST_USER = 'khanmaki9932@gmail.com'
 # IMPORTANT: Use a Google App Password here, NOT your regular password
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "izsmthzchfuankvx") 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Jazzmin Admin Panel Settings
+JAZZMIN_SETTINGS = {
+    "site_title": "Portfolio Admin",
+    "site_header": "Portfolio",
+    "site_brand": "My Portfolio",
+    "welcome_sign": "Welcome to the Portfolio Admin Panel",
+    "copyright": "Portfolio Ltd",
+    "search_model": ["portfolio.Project", "portfolio.PersonalInfo"],
+    "show_ui_builder": True,
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "darkly",
+    "dark_mode_theme": "darkly",
+}
