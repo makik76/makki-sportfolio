@@ -9,6 +9,13 @@ def home(request):
     skills = Skill.objects.all()
     projects = Project.objects.all()
     
+    # Process tech stack for tags
+    for project in projects:
+        if project.tech_stack:
+            project.tags_list = [tag.strip() for tag in project.tech_stack.split(',')]
+        else:
+            project.tags_list = []
+            
     context = {
         'personal_info': personal_info,
         'skills': skills,
