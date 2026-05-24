@@ -90,12 +90,33 @@ if os.getenv("POSTGRES_URL") or os.getenv("DATABASE_URL"):
         )
     }
 else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+    # Vercel has a read-only filesystem, but /tmp is writable.
+    # We copy the local db to /tmp so the admin panel doesn't crash.
+    # WARNING: Data in /tmp will be wiped frequently by Vercel!
+    import shutil
+    import sys
+    
+    is_vercel = os.getenv("VERCEL") == "1"
+    
+    if is_vercel:
+        tmp_db_path = "/tmp/db.sqlite3"
+        original_db_path = BASE_DIR / "db.sqlite3"
+        if not os.path.exists(tmp_db_path) and os.path.exists(original_db_path):
+            shutil.copy2(original_db_path, tmp_db_path)
+        
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.sqlite3",
+                "NAME": tmp_db_path,
+            }
         }
-    }
+    else:
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.sqlite3",
+                "NAME": BASE_DIR / "db.sqlite3",
+            }
+        }
 
 
 # Password validation
